@@ -6,6 +6,9 @@ inputs:
     required: true
     description: 'input description here'
     default: 'default value if applicable'
+  GITHUB_TOKEN: # change this
+    required: true
+    description: 'GITHUB_TOKEN to work with GitHub API'
 runs:
   using: 'node16'
   main: 'dist/index.js'
