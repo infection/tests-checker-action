@@ -115,7 +115,7 @@ function run() {
                 return;
             }
             octokit.rest.pulls.createReview({
-                body: 'Hello from Action!',
+                body: config.comment,
                 event: 'REQUEST_CHANGES',
                 pull_number: pullRequestNumber,
                 repo: issue.repo,
