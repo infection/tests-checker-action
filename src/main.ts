@@ -10,6 +10,8 @@ async function run(): Promise<void> {
     const {context} = github
 
     const config = {
+      comment:
+        'Could you please add tests to make sure this change works as expected?',
       fileExtensions: ['.php', '.ts'], // todo core.getInput('fileExtensions'),
       testDir: 'tests', // todo core.getInput('testDir'),
       testPattern: '' // todo core.getInput('testPattern')

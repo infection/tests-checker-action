@@ -83,6 +83,7 @@ function run() {
         try {
             const { context } = github;
             const config = {
+                comment: 'Could you please add tests to make sure this change works as expected?',
                 fileExtensions: ['.php', '.ts'],
                 testDir: 'tests',
                 testPattern: '' // todo core.getInput('testPattern')
