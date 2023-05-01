@@ -83,11 +83,10 @@ function run() {
         try {
             const { context } = github;
             const config = {
-                fileExtensions: ['.php'],
+                fileExtensions: ['.php', '.ts'],
                 testDir: 'tests',
                 testPattern: '' // todo core.getInput('testPattern')
             };
-            core.debug(`pull_request ${context.payload.pull_request}`);
             if (context.payload.pull_request == null) {
                 core.debug('This action is supposed to be run on pull_request event only.');
             }
