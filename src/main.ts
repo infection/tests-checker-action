@@ -24,10 +24,14 @@ async function run(): Promise<void> {
       return
     }
 
-    await octokit.rest.issues.createComment({
-      ...context.repo,
-      issue_number: pullRequestNumber,
-      body: 'Hello from Action!'
+    const issue = context.issue
+
+    octokit.rest.pulls.createReview({
+      body: 'Hello from Action!',
+      event: 'REQUEST_CHANGES',
+      pull_number: pullRequestNumber,
+      repo: issue.repo,
+      owner: issue.owner
     })
 
     core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true

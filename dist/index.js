@@ -58,7 +58,14 @@ function run() {
                 core.debug('Could not get pull request number from context, exiting');
                 return;
             }
-            yield octokit.rest.issues.createComment(Object.assign(Object.assign({}, context.repo), { issue_number: pullRequestNumber, body: 'Hello from Action!' }));
+            const issue = context.issue;
+            octokit.rest.pulls.createReview({
+                body: 'Hello from Action!',
+                event: 'REQUEST_CHANGES',
+                pull_number: pullRequestNumber,
+                repo: issue.repo,
+                owner: issue.owner
+            });
             core.debug(`Waiting ${ms} milliseconds ...`); // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
             core.debug(new Date().toTimeString());
             yield (0, wait_1.wait)(parseInt(ms, 10));
