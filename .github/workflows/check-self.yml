@@ -1,4 +1,5 @@
-name: 'build-test'
+name: 'Require tests if source code is changed'
+
 on: # rebuild any PRs and main branch changes
   pull_request:
     types: [opened]
