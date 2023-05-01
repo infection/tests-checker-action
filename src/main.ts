@@ -7,18 +7,13 @@ import {
 
 async function run(): Promise<void> {
   try {
-    // eslint-disable-next-line no-console
-    console.log('xxx error')
-    core.error('xxx error')
     const {context} = github
 
     const config = {
-      fileExtensions: ['.php'], // todo core.getInput('fileExtensions'),
+      fileExtensions: ['.php', '.ts'], // todo core.getInput('fileExtensions'),
       testDir: 'tests', // todo core.getInput('testDir'),
       testPattern: '' // todo core.getInput('testPattern')
     }
-
-    core.debug('!!!!!!!!!!')
 
     if (context.payload.pull_request == null) {
       core.debug(
