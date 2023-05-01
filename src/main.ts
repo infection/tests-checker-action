@@ -7,6 +7,8 @@ import {
 
 async function run(): Promise<void> {
   try {
+    // eslint-disable-next-line no-console
+    console.log('xxx error')
     core.error('xxx error')
     const {context} = github
 
