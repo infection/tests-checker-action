@@ -7,6 +7,7 @@ import {
 
 async function run(): Promise<void> {
   try {
+    core.error('xxx error')
     const {context} = github
 
     const config = {
