@@ -1,10 +1,19 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import {wait} from './wait'
+import {
+  getTouchedSourceFilesRequireTests,
+  getTouchedTestFiles
+} from './fileFilters'
 
 async function run(): Promise<void> {
   try {
     const {context} = github
+
+    const config = {
+      fileExtensions: ['.php', '.ts'], // todo core.getInput('fileExtensions'),
+      testDir: 'tests', // todo core.getInput('testDir'),
+      testPattern: '' // todo core.getInput('testPattern')
+    }
 
     if (context.payload.pull_request == null) {
       core.debug(
@@ -13,9 +22,9 @@ async function run(): Promise<void> {
     }
 
     const githubToken = core.getInput('GITHUB_TOKEN')
-    const ms: string = core.getInput('milliseconds')
 
     const octokit = github.getOctokit(githubToken)
+    const issue = context.issue
 
     const pullRequestNumber = context.payload.pull_request?.number
 
@@ -24,19 +33,44 @@ async function run(): Promise<void> {
       return
     }
 
-    await octokit.rest.issues.createComment({
-      ...context.repo,
-      issue_number: pullRequestNumber,
-      body: 'Hello from Action!'
+    const allFiles = await octokit.paginate(
+      octokit.rest.pulls.listFiles,
+      {
+        owner: issue.owner,
+        repo: issue.repo,
+        pull_number: pullRequestNumber
+      },
+      res => res.data
+    )
+
+    const sourceFilesRequireTests = getTouchedSourceFilesRequireTests(
+      allFiles,
+      config.fileExtensions
+    )
+
+    if (sourceFilesRequireTests.length === 0) {
+      core.debug('No source files require tests, exiting')
+      return
+    }
+
+    const testFiles = getTouchedTestFiles(
+      allFiles,
+      config.testDir,
+      config.testPattern
+    )
+
+    if (testFiles.length !== 0) {
+      core.debug('Test files were touched, exiting')
+      return
+    }
+
+    octokit.rest.pulls.createReview({
+      body: 'Hello from Action!',
+      event: 'REQUEST_CHANGES',
+      pull_number: pullRequestNumber,
+      repo: issue.repo,
+      owner: issue.owner
     })
-
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
-
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    core.setOutput('time', new Date().toTimeString())
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
