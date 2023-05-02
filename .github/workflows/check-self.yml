@@ -2,8 +2,7 @@ name: 'Require tests if source code is changed'
 
 on: # rebuild any PRs and main branch changes
   pull_request:
-#    TODO - uncomment this line when you we are ready
-#    types: [opened]
+    types: [opened]
 
 jobs:
   check: # make sure the action works on a clean machine without building
