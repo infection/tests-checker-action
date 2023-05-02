@@ -5,16 +5,27 @@ import {
   getTouchedTestFiles
 } from './fileFilters'
 
+function getFileExtensions(): string[] {
+  const fileExtensionsInput = core.getInput('fileExtensions')
+
+  if (fileExtensionsInput === '') {
+    return ['.php', '.ts', '.js', '.c', '.cs', '.cpp', '.rb', '.java']
+  }
+
+  return fileExtensionsInput.split(',')
+}
+
 async function run(): Promise<void> {
   try {
     const {context} = github
 
     const config = {
       comment:
+        core.getInput('comment') ||
         'Could you please add tests to make sure this change works as expected?',
-      fileExtensions: ['.php', '.ts'], // todo core.getInput('fileExtensions'),
-      testDir: 'tests', // todo core.getInput('testDir'),
-      testPattern: '' // todo core.getInput('testPattern')
+      fileExtensions: getFileExtensions(),
+      testDir: core.getInput('testDir') || 'tests',
+      testPattern: core.getInput('testPattern') || ''
     }
 
     if (context.payload.pull_request == null) {
@@ -23,7 +34,7 @@ async function run(): Promise<void> {
       )
     }
 
-    const githubToken = core.getInput('GITHUB_TOKEN')
+    const githubToken: string = core.getInput('GITHUB_TOKEN')
 
     const octokit = github.getOctokit(githubToken)
     const issue = context.issue
