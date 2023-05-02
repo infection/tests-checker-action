@@ -1,5 +1,6 @@
 import {minimatch} from 'minimatch'
-type File = {
+
+export type File = {
   filename: string
 }
 

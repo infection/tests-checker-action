@@ -1,12 +1,20 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Tests checker'
+description: 'Requires writing the tests in Pull Requests'
+author: 'Rafalko, Maksim <maks.rafalko@gmail.com>'
 inputs:
-  milliseconds: # change this
-    required: true
-    description: 'input description here'
-    default: 'default value if applicable'
-  GITHUB_TOKEN: # change this
+  comment:
+    required: false
+    description: 'Comment to be used by action when PR does not have tests'
+  fileExtensions:
+    required: false
+    description: 'Comma-separated extensions of the source code folder files be checked. Example: ".php,.ts,.js"'
+  testDir:
+    required: false
+    description: 'Test directory to find tests in'
+  testPattern:
+    required: false
+    description: 'A shell glob pattern that should match test files. For example, you can set it to testPattern: *_test.go and Bot will be able to understand, that added test has this pattern instead of located in testDir. testDir and testPattern are alternatives, however can be used together.'
+  GITHUB_TOKEN:
     required: true
     description: 'GITHUB_TOKEN to work with GitHub API'
 runs:

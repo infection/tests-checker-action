@@ -77,15 +77,24 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const fileFilters_1 = __nccwpck_require__(2440);
+function getFileExtensions() {
+    const fileExtensionsInput = core.getInput('fileExtensions');
+    if (fileExtensionsInput === '') {
+        return ['.php', '.ts', '.js', '.c', '.cs', '.cpp', '.rb', '.java'];
+    }
+    return fileExtensionsInput.split(',');
+}
 function run() {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { context } = github;
             const config = {
-                fileExtensions: ['.php', '.ts'],
-                testDir: 'tests',
-                testPattern: '' // todo core.getInput('testPattern')
+                comment: core.getInput('comment') ||
+                    'Could you please add tests to make sure this change works as expected?',
+                fileExtensions: getFileExtensions(),
+                testDir: core.getInput('testDir') || 'tests',
+                testPattern: core.getInput('testPattern') || ''
             };
             if (context.payload.pull_request == null) {
                 core.debug('This action is supposed to be run on pull_request event only.');
@@ -114,7 +123,7 @@ function run() {
                 return;
             }
             octokit.rest.pulls.createReview({
-                body: 'Hello from Action!',
+                body: config.comment,
                 event: 'REQUEST_CHANGES',
                 pull_number: pullRequestNumber,
                 repo: issue.repo,

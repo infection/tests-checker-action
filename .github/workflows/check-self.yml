@@ -2,6 +2,7 @@ name: 'Require tests if source code is changed'
 
 on: # rebuild any PRs and main branch changes
   pull_request:
+#    TODO - uncomment this line when you we are ready
 #    types: [opened]
 
 jobs:
@@ -11,5 +12,6 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./
         with:
-          milliseconds: 1000
+          fileExtensions: '.ts,.js'
+          testDir: '__tests__'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
