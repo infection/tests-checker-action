@@ -2,13 +2,22 @@
 
 This GitHub Action requires writing the tests in Pull Requests, by requesting changes and posting a comment if tests are missing.
 
-To install it, copy and paste the following snippet into your `.github/workflows/*.yml` file.
+To install it, copy and paste the following snippet into your `.github/workflows/require-tests.yml` file.
 
 ```yaml
-- name: Require tests if source code is changed
-  uses: infection/tests-checker-action@v1
-  with:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+name: 'Require tests if source code is changed'
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: infection/tests-checker-action@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 <img width="990" alt="tests-checker" src="https://user-images.githubusercontent.com/3725595/45590526-b7f3fa00-b942-11e8-972d-143c0b367017.png">
