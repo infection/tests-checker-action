@@ -1,74 +1,75 @@
-<p align="center">
-  <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
-</p>
+# Tests Checker Action
 
-# Create a JavaScript Action using TypeScript
+This GitHub Action requires writing the tests in Pull Requests, by requesting changes and posting a comment if tests are missing.
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+To install it, copy and paste the following snippet into your `.github/workflows/*.yml` file.
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+```yaml
+- name: Require tests if source code is changed
+  uses: infection/tests-checker-action@v1
+  with:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+<img width="990" alt="tests-checker" src="https://user-images.githubusercontent.com/3725595/45590526-b7f3fa00-b942-11e8-972d-143c0b367017.png">
 
-## Create an action from this template
+## Settings
 
-Click the `Use this Template` and provide the new repo details for your action
+Default values are:
 
-## Code in Main
+```yaml
+comment: 'Could you please add tests to make sure this change works as expected?',
+fileExtensions: '.php,.ts,.js,.c,.cs,.cpp,.rb,.java'
+testDir: 'tests'
+testPattern: ''
+```
+where
+
+* `comment` - a text that bot will post when it won't find tests in the PR
+* `fileExtensions` - extensions of the files that should be treated as a `source code`. Bot will do nothing if you just updating `README.md` because usually no tests are required to cover such change.
+* `testDir` - folder, where tests are located. Make sure to set it correctly, otherwise bot will not be able to understand whether the test file was added or not.
+* `testPattern` - a shell glob pattern that should match test files. For example, you can set it to `testPattern: *_test.go` and Bot will be able to understand, that added test has this pattern instead of located in `testDir`. `testDir` and `testPattern` are alternatives, however can be used together.
+
+Both `testDir` and `testPattern` may be specified in a custom configuration, both settings will be used to locate test files.
+If you want to change any of the settings, just add `.github/tests_checker.yml`:
+
+How to override? You can configure the action by overriding any of the settings listed below
+
+```yaml
+- name: Require tests if source code is changed
+  uses: infection/tests-checker-action@v1
+  with:
+    fileExtensions: '.ts,.js'
+    testDir: '__tests__'
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+## Developing and contributing
 
 > First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 9, for instance.
 
 Install the dependencies  
+
 ```bash
 $ npm install
 ```
 
 Build the typescript and package it for distribution
+
 ```bash
 $ npm run build && npm run package
 ```
 
 Run the tests :heavy_check_mark:  
+
 ```bash
 $ npm test
 
  PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
   ✓ test runs (95ms)
 
 ...
 ```
-
-## Change action.yml
-
-The action.yml defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
 
 ## Publish to a distribution branch
 
@@ -87,19 +88,3 @@ Note: We recommend using the `--license` option for ncc, which will create a lic
 Your action is now published! :rocket: 
 
 See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
-
-```yaml
-uses: ./
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
-
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
