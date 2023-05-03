@@ -90,8 +90,7 @@ function run() {
         try {
             const { context } = github;
             const config = {
-                comment: core.getInput('comment') ||
-                    'Could you please add tests to make sure this change works as expected?',
+                comment: core.getInput('comment') || 'Could you please add tests to make sure this change works as expected?',
                 fileExtensions: getFileExtensions(),
                 testDir: core.getInput('testDir') || 'tests',
                 testPattern: core.getInput('testPattern') || ''

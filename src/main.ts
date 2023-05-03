@@ -1,9 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import {
-  getTouchedSourceFilesRequireTests,
-  getTouchedTestFiles
-} from './fileFilters';
+import {getTouchedSourceFilesRequireTests, getTouchedTestFiles} from './fileFilters';
 
 function getFileExtensions(): string[] {
   const fileExtensionsInput = core.getInput('fileExtensions');
@@ -20,18 +17,14 @@ async function run(): Promise<void> {
     const {context} = github;
 
     const config = {
-      comment:
-        core.getInput('comment') ||
-        'Could you please add tests to make sure this change works as expected?',
+      comment: core.getInput('comment') || 'Could you please add tests to make sure this change works as expected?',
       fileExtensions: getFileExtensions(),
       testDir: core.getInput('testDir') || 'tests',
       testPattern: core.getInput('testPattern') || ''
     };
 
     if (context.payload.pull_request == null) {
-      core.debug(
-        'This action is supposed to be run on pull_request event only.'
-      );
+      core.debug('This action is supposed to be run on pull_request event only.');
     }
 
     const githubToken: string = core.getInput('GITHUB_TOKEN');
@@ -56,21 +49,14 @@ async function run(): Promise<void> {
       res => res.data
     );
 
-    const sourceFilesRequireTests = getTouchedSourceFilesRequireTests(
-      allFiles,
-      config.fileExtensions
-    );
+    const sourceFilesRequireTests = getTouchedSourceFilesRequireTests(allFiles, config.fileExtensions);
 
     if (sourceFilesRequireTests.length === 0) {
       core.debug('No source files require tests, exiting');
       return;
     }
 
-    const testFiles = getTouchedTestFiles(
-      allFiles,
-      config.testDir,
-      config.testPattern
-    );
+    const testFiles = getTouchedTestFiles(allFiles, config.testDir, config.testPattern);
 
     if (testFiles.length !== 0) {
       core.debug('Test files were touched, exiting');

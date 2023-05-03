@@ -47,7 +47,13 @@
       "@typescript-eslint/semi": ["error", "always"],
       "@typescript-eslint/type-annotation-spacing": "error",
       "@typescript-eslint/unbound-method": "error",
-      "prettier/prettier": ["error", { "semi": true }]
+      "prettier/prettier": [
+        "error",
+        {
+          "semi": true,
+          "printWidth": 120
+        }
+      ]
     },
     "env": {
       "node": true,
