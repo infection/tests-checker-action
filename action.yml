@@ -1,6 +1,9 @@
 name: 'Tests checker'
 description: 'Requires writing the tests in Pull Requests'
 author: 'Rafalko, Maksim <maks.rafalko@gmail.com>'
+branding:
+  icon: 'check'
+  color: 'white'
 inputs:
   comment:
     required: false
