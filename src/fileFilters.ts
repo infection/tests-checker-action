@@ -4,10 +4,7 @@ export type File = {
   filename: string;
 };
 
-export function getTouchedSourceFilesRequireTests(
-  files: File[],
-  fileExtensions: string[]
-): File[] {
+export function getTouchedSourceFilesRequireTests(files: File[], fileExtensions: string[]): File[] {
   return files.filter(file => {
     return fileExtensions.find((fileExtension: string) => {
       return file.filename.endsWith(fileExtension);
@@ -15,11 +12,7 @@ export function getTouchedSourceFilesRequireTests(
   });
 }
 
-export function getTouchedTestFiles(
-  files: File[],
-  testDir: string,
-  testPattern: string
-): File[] {
+export function getTouchedTestFiles(files: File[], testDir: string, testPattern: string): File[] {
   let filtered: File[] = [];
 
   if (testDir) {
