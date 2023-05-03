@@ -30,10 +30,7 @@ where
 * `testDir` - folder, where tests are located. Make sure to set it correctly, otherwise bot will not be able to understand whether the test file was added or not.
 * `testPattern` - a shell glob pattern that should match test files. For example, you can set it to `testPattern: *_test.go` and Bot will be able to understand, that added test has this pattern instead of located in `testDir`. `testDir` and `testPattern` are alternatives, however can be used together.
 
-Both `testDir` and `testPattern` may be specified in a custom configuration, both settings will be used to locate test files.
-If you want to change any of the settings, just add `.github/tests_checker.yml`:
-
-How to override? You can configure the action by overriding any of the settings listed below
+How to override? You can configure the action by overriding any of the settings listed above.
 
 ```yaml
 - name: Require tests if source code is changed
