@@ -8,14 +8,14 @@ To install it, copy and paste the following snippet into your `.github/workflows
 name: 'Require tests if source code is changed'
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened]
 
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: infection/tests-checker-action@v1.0.1
+      - uses: infection/tests-checker-action@v1.0.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
